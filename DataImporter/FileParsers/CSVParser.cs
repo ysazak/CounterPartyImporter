@@ -6,46 +6,72 @@ using System.IO.Abstractions;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DataImporter.Parsers
+namespace DataImporter.FileParsers
 {
-    public class CSVParser : IFileParser
+    public class CSVParser : BaseFileParser
     {
         const string DelimeterPattern = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        private readonly IFileSystem fileSystem;
 
-        public CSVParser() : this(new FileSystem())
+        public CSVParser()
         {
         }
-        public CSVParser(IFileSystem fileSystem)
+
+        public CSVParser(IFileSystem fileSystem) : base(fileSystem)
         {
-            this.fileSystem = fileSystem;
         }
-        public DataTable ConvertToDataTable(string filePath)
+
+        //public override DataTable ConvertToDataTable(string filePath)
+        //{
+        //    using (Stream stream = fileSystem.File.OpenRead(filePath))
+        //    {
+        //        using (StreamReader sr = new StreamReader(stream))
+        //        {
+        //            string[] headers = sr.ReadLine().Split(',');
+        //            DataTable dt = new DataTable();
+        //            foreach (string header in headers)
+        //            {
+        //                dt.Columns.Add(header);
+        //            }
+        //            while (!sr.EndOfStream)
+        //            {
+        //                string[] rows = Regex.Split(sr.ReadLine(), DelimeterPattern);
+        //                DataRow dr = dt.NewRow();
+        //                for (int i = 0; i < headers.Length; i++)
+        //                {
+        //                    dr[i] = rows[i];
+        //                }
+        //                dt.Rows.Add(dr);
+        //            }
+        //            return dt;
+        //        }
+        //    }
+
+        //}
+
+        public override DataTable ConvertToDataTable(StreamReader streamReader)
         {
-            using (Stream stream = fileSystem.File.OpenRead(filePath))
+            string[] headers = streamReader.ReadLine().Split(',');
+            DataTable dt = new DataTable();
+            foreach (string header in headers)
             {
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    string[] headers = sr.ReadLine().Split(',');
-                    DataTable dt = new DataTable();
-                    foreach (string header in headers)
-                    {
-                        dt.Columns.Add(header);
-                    }
-                    while (!sr.EndOfStream)
-                    {
-                        string[] rows = Regex.Split(sr.ReadLine(), DelimeterPattern);
-                        DataRow dr = dt.NewRow();
-                        for (int i = 0; i < headers.Length; i++)
-                        {
-                            dr[i] = rows[i];
-                        }
-                        dt.Rows.Add(dr);
-                    }
-                    return dt;
-                }
+                dt.Columns.Add(header);
             }
+            while (!streamReader.EndOfStream)
+            {
+                string[] rows = Regex.Split(streamReader.ReadLine(), DelimeterPattern);
+                DataRow dr = dt.NewRow();
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    dr[i] = rows[i];
+                }
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
 
+        public static new IList<string> ExtensionList()
+        {
+            return new[] { "csv" };
         }
     }
 }

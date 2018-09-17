@@ -1,12 +1,13 @@
 ﻿using DataImporter;
 using DataImporter.Mapper;
 using CounterPartyDomain.Models;
-using DataImporter.Parsers;
+using DataImporter.FileParsers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using CounterPartyDomain;
+using DataImporter.FileParsers;
 
 namespace ConsoleApp
 {
@@ -14,6 +15,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+
             Func<DataRow, object> fnCompanyType = (dr) =>
             {
                 if (dr["IsBuyer"].ToString() == null && dr["IsSeller"].ToString() == null)
@@ -41,9 +43,8 @@ namespace ConsoleApp
             mappings.Add(new ColumnToPropertyMapping<Company>("Fax", "Fax"));
 
             var mapper = new DataTableMapper<Company>(mappings);
-            var parser = new CSVParser();
             Stopwatch sw = Stopwatch.StartNew();
-            var importer = new Importer(parser, mapper);
+            var importer = new Importer(mapper);
             var list = importer.Import("data_large.csv");
             sw.Stop();
             Console.WriteLine($"Mapping took {sw.ElapsedMilliseconds}");

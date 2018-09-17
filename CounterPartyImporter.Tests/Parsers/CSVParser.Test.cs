@@ -1,4 +1,4 @@
-﻿using DataImporter.Parsers;
+﻿using DataImporter.FileParsers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

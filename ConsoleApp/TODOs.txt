@@ -1,0 +1,4 @@
+﻿# WebApplication
+# Get rid of Object mapping
+# Write more tests
+# Add Enumartion class for CompanyType
