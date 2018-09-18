@@ -20,8 +20,7 @@ namespace DataImporter.FileParsers
 
         public override DataTable ConvertToDataTable(StreamReader streamReader)
         {
-            // Future development
-            throw new NotImplementedException();
+            throw new NotImplementedException("This file format will be supported soon.");
         }
 
         public static new IEnumerable<string> ExtensionList()
