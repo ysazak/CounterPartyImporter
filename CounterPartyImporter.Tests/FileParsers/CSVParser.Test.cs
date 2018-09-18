@@ -29,11 +29,19 @@ B10018,Test Company 18,No,Yes,3165656667,319889808") },
         }
 
         [Test]
-        public void ConvertToDataTable_GivenFileHavingData_ReturnDataTable()
+        public void ConvertToDataTable_GivenFileHavingValidData_ReturnExpectedDataTable()
         {
             CSVParser csvParser = new CSVParser(mockFileSystem);
             var dt = csvParser.ConvertToDataTable(@"C:\counterParty01.csv");
             Assert.AreEqual(5, dt.Rows.Count);
+        }
+
+        [Test]
+        public void ConvertToDataTable_GivenFileHavingNoData_ReturnEmptyDataTable()
+        {
+            CSVParser csvParser = new CSVParser(mockFileSystem);
+            var dt = csvParser.ConvertToDataTable(@"C:\counterParty02.csv");
+            Assert.AreEqual(0, dt.Rows.Count);
         }
     }
 }
