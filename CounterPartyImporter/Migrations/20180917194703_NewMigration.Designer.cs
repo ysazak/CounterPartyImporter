@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CounterPartyDomain.Migrations
 {
-    [DbContext(typeof(CountryPartyImporterDbContext))]
+    [DbContext(typeof(CompanyDbContext))]
     [Migration("20180917194703_NewMigration")]
     partial class NewMigration
     {

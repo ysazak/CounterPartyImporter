@@ -8,20 +8,21 @@ using System.Linq.Expressions;
 using System;
 using System.IO;
 using DataImporter.Utils;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace CounterPartyDomain
+namespace CounterPartyImporter.Web.BL
 {
-    public class Importer
+    public class CounterPartyImporter
     {
         private IFileParser parser;
-        private readonly FileParserFactory fileParserFactory;
         private readonly IMapper<Company, DataTable> mapper;
-
+        private readonly IFileParserFactory fileParserFactory;
         static Func<DataRow, object> fnCompanyType = (dr) =>
         {
             if (dr["IsBuyer"].ToString() == null && dr["IsSeller"].ToString() == null)
             {
-                throw new Exception("Required columns not found");
+                throw new MappingException("Required columns are not found");
             }
             bool isBuyer = false;
             isBuyer = string.Equals(dr["IsBuyer"].ToString(), "yes", StringComparison.InvariantCultureIgnoreCase);
@@ -46,10 +47,10 @@ namespace CounterPartyDomain
         };
 
 
-        public Importer()
+        public CounterPartyImporter(IServiceProvider services, IFileParserFactory fileParserFactory)
         {
-            fileParserFactory = new FileParserFactory();
-            this.mapper = new DataTableMapper<Company>(mappings);
+            this.mapper = services.GetService<IMapper<Company, DataTable>>();
+            this.fileParserFactory = fileParserFactory;
         }
 
         public List<Company> Import(string filePath)
@@ -61,7 +62,7 @@ namespace CounterPartyDomain
                 throw new NotSupportedException($"{extension} is not supported");
             }
             var dt = parser.ConvertToDataTable(filePath);
-            return mapper.Map(dt).ToList();
+            return mapper.Map(mappings, dt).ToList();
         }
     }
 

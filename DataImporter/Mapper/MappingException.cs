@@ -10,9 +10,13 @@ namespace DataImporter.Mapper
         private readonly string message;
         private readonly Exception exception;
 
-        public MappingException(string message, string propertyName)
+        public MappingException(string message)
         {
             this.message = message;
+        }
+
+        public MappingException(string message, string propertyName): this(message)
+        {
             this.propertyName = propertyName;
         }
 

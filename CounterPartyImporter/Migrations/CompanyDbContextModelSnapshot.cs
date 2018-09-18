@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CounterPartyDomain.Migrations
 {
-    [DbContext(typeof(CountryPartyImporterDbContext))]
-    partial class CountryPartyImporterDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(CompanyDbContext))]
+    partial class CompanyDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

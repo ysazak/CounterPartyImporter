@@ -28,7 +28,7 @@
     <nav aria-label="...">
       <ul class="pager">
         <li *ngIf="currentPage > 1"><a (click)="OnClickPrevious($event)">Previous</a></li>
-        <li><b>{{currentPage}}</b></li>
+        <li><b>{{currentPage}}/{{totalPage}} ({{count}})</b></li>
         <li *ngIf="currentPage < count"><a (click)="OnClickNext($event)">Next</a></li>
       </ul>
     </nav>

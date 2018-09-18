@@ -9,14 +9,7 @@ namespace DataImporter.Mapper
 {
     public class DataTableMapper<TTarget> : IMapper<TTarget, DataTable> where TTarget : class, new()
     {
-        private readonly IEnumerable<IPropertyMapping<TTarget>> mappings;
-
-        public DataTableMapper(IEnumerable<IPropertyMapping<TTarget>> mappings)
-        {
-            this.mappings = mappings;
-        }
-
-        private IEnumerable<PropertyInfo> GetProperties(Func<IPropertyMapping<TTarget>, string, bool> condition)
+        private IEnumerable<PropertyInfo> GetProperties(IEnumerable<IPropertyMapping<TTarget>> mappings, Func<IPropertyMapping<TTarget>, string, bool> condition)
         {
             return GetProperties().Where(property => property.CanWrite && mappings.Any(m => condition.Invoke(m, property.Name))).ToList();
         }
@@ -27,13 +20,13 @@ namespace DataImporter.Mapper
             return objType.GetProperties().Where(property => property.CanWrite).ToList();
         }
 
-        public IEnumerable<TTarget> Map(DataTable source)
+        public IEnumerable<TTarget> Map(IEnumerable<IPropertyMapping<TTarget>> mappings, DataTable source)
         {
             try
             {
                 Func<IPropertyMapping<TTarget>, string, bool> whereClause = (mapping, propertyName) => mapping.PropertyName == propertyName;
 
-                IEnumerable<PropertyInfo> properties = GetProperties(whereClause);
+                IEnumerable<PropertyInfo> properties = GetProperties(mappings, whereClause);
 
                 var list = new List<TTarget>(source.Rows.Count);
 
@@ -68,7 +61,7 @@ namespace DataImporter.Mapper
             }
         }
 
-        public bool ValidateMappingProperties()
+        public bool ValidateMappingProperties(IEnumerable<IPropertyMapping<TTarget>>  mappings)
         {
             var properties = GetProperties();
             foreach (var item in mappings)

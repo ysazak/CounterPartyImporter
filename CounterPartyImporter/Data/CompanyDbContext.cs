@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CounterPartyDomain.Data
 {
-    public class CountryPartyImporterDbContext : DbContext
+    public class CompanyDbContext : DbContext
     {
 
         public DbSet<Company> Companies { get; set; }
-        public CountryPartyImporterDbContext(DbContextOptions<CountryPartyImporterDbContext> options)
+        public CompanyDbContext(DbContextOptions<CompanyDbContext> options)
     : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

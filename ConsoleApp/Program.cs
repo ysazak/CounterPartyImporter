@@ -44,14 +44,14 @@ namespace ConsoleApp
 
             //var mapper = new DataTableMapper<Company>(mappings);
             Stopwatch sw = Stopwatch.StartNew();
-            var importer = new Importer();
-            var list = importer.Import("data_large.csv");
-            sw.Stop();
-            Console.WriteLine($"Mapping took {sw.ElapsedMilliseconds}");
-            foreach (var item in list)
-            {
-                Console.WriteLine($"{item.ExternalId}\t{item.LegalName}\t{item.TradingName}\t{item.CompanyType.ToString()}\t{item.Fax}\t{item.Phone}");
-            }
+            //var importer = new CounterPartyImporter();
+            //var list = importer.Import("data_large.csv");
+            //sw.Stop();
+            //Console.WriteLine($"Mapping took {sw.ElapsedMilliseconds}");
+            //foreach (var item in list)
+            //{
+            //    Console.WriteLine($"{item.ExternalId}\t{item.LegalName}\t{item.TradingName}\t{item.CompanyType.ToString()}\t{item.Fax}\t{item.Phone}");
+            //}
         }
     }
 }

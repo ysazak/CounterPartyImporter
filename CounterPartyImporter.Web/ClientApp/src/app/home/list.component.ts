@@ -19,11 +19,11 @@ export class ListComponent implements OnInit {
   loading = false;
   failed = false;
   currentPage = 1;
+  totalPage = 1;
   pageSize = 10;
   count = 0;
 
   pagedTable: Observable<PagedTable<Company>>;
-  // companyList: Observable<Company[]>;
   constructor(private companyService: CompanyService) { }
 
   loadTable() {
@@ -35,11 +35,12 @@ export class ListComponent implements OnInit {
       this.pageSize = pt.pageSize;
       this.currentPage = pt.page;
       this.count = pt.count;
+      this.totalPage = Math.ceil(pt.count / pt.pageSize);
     },
-    err => {
-      this.loading = false;
-      this.failed = true;
-    });
+      err => {
+        this.loading = false;
+        this.failed = true;
+      });
   }
 
   ngOnInit() {

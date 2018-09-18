@@ -11,9 +11,9 @@ namespace CounterPartyDomain.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
-        private readonly CountryPartyImporterDbContext context;
+        private readonly CompanyDbContext context;
 
-        public CompanyRepository(CountryPartyImporterDbContext context)
+        public CompanyRepository(CompanyDbContext context)
         {
             this.context = context;
         }

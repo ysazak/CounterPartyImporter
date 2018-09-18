@@ -9,6 +9,7 @@ using DataImporter.FileParsers;
 using DataImporter.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CounterPartyImporter.Web.Controllers
 {
@@ -16,10 +17,12 @@ namespace CounterPartyImporter.Web.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
+        private readonly IServiceProvider services;
         private readonly ICompanyRepository companyRepository;
 
-        public CompanyController(ICompanyRepository companyRepository)
+        public CompanyController(IServiceProvider services, ICompanyRepository companyRepository)
         {
+            this.services = services;
             this.companyRepository = companyRepository;
         }
 
@@ -49,7 +52,7 @@ namespace CounterPartyImporter.Web.Controllers
                     {
                         await file.CopyToAsync(stream);
                     }
-                    var importer = new CounterPartyDomain.Importer();
+                    var importer = ActivatorUtilities.CreateInstance<BL.CounterPartyImporter>(services);
                     var list = importer.Import(filePath);
                     await companyRepository.AddRange(list);
 

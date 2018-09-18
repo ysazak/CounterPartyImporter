@@ -42,8 +42,8 @@ namespace DataImporter.Tests.Mapper
             mappings.Add(new ColumnToPropertyMapping<TestC>("Name", "testName"));
             mappings.Add(new ColumnToPropertyMapping<TestC>("Id", "testId"));
 
-            var mapper = new DataTableMapper<TestC>(mappings);
-            var result = mapper.Map(dataTable).ToList();
+            var mapper = new DataTableMapper<TestC>();
+            var result = mapper.Map(mappings, dataTable).ToList();
 
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("X001", result[0].Name);
@@ -58,8 +58,8 @@ namespace DataImporter.Tests.Mapper
             var mappings = new List<IPropertyMapping<TestC>>();
             mappings.Add(new ColumnToPropertyMapping<TestC>("Name", "testNameX"));
 
-            var mapper = new DataTableMapper<TestC>(mappings);
-            Assert.Throws<MappingException>(() => mapper.Map(dataTable));  
+            var mapper = new DataTableMapper<TestC>();
+            Assert.Throws<MappingException>(() => mapper.Map(mappings, dataTable));  
         }
 
         [Test]
@@ -68,8 +68,8 @@ namespace DataImporter.Tests.Mapper
             var mappings = new List<IPropertyMapping<TestC>>();
             mappings.Add(new ColumnToPropertyMapping<TestC>("Name", "testName"));
 
-            var mapper = new DataTableMapper<TestC>(mappings);
-            Assert.IsTrue(mapper.ValidateMappingProperties());
+            var mapper = new DataTableMapper<TestC>();
+            Assert.IsTrue(mapper.ValidateMappingProperties(mappings));
         }
 
         [Test]
@@ -78,8 +78,8 @@ namespace DataImporter.Tests.Mapper
             var mappings = new List<IPropertyMapping<TestC>>();
             mappings.Add(new ColumnToPropertyMapping<TestC>("Namex", "testName"));
 
-            var mapper = new DataTableMapper<TestC>(mappings);
-            Assert.IsFalse(mapper.ValidateMappingProperties());
+            var mapper = new DataTableMapper<TestC>();
+            Assert.IsFalse(mapper.ValidateMappingProperties(mappings));
         }
     }
 }

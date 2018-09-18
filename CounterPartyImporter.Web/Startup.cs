@@ -1,5 +1,8 @@
 using CounterPartyDomain.Data;
+using CounterPartyDomain.Models;
 using CounterPartyDomain.Repositories;
+using DataImporter.FileParsers;
+using DataImporter.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Data;
 
 namespace CounterPartyImporter.Web
 {
@@ -33,7 +37,7 @@ namespace CounterPartyImporter.Web
             });
 
             var connectionStr = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<CountryPartyImporterDbContext>(options => options.UseSqlServer(connectionStr));
+            services.AddDbContext<CompanyDbContext>(options => options.UseSqlServer(connectionStr));
 
             services.AddSwaggerGen(c =>
             {
@@ -41,6 +45,10 @@ namespace CounterPartyImporter.Web
             });
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+
+            services.AddScoped<IFileParserFactory, FileParserFactory>();
+            services.AddScoped<IMapper<Company, DataTable>, DataTableMapper<Company>>();
+            services.AddScoped<IMapper<Company, DataTable>, DataTableMapper<Company>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

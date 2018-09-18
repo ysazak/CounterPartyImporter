@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CounterPartyImporter\CounterPartyDomain.csproj" />
+    <ProjectReference Include="..\CounterPartyImporter\CompanyDomain.csproj" />
     <ProjectReference Include="..\DataImporter\DataImporter.csproj" />
   </ItemGroup>
 
