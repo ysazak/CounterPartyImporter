@@ -23,6 +23,14 @@ namespace DataImporter.FileParsers
             }
             return (IFileParser)Activator.CreateInstance(type);
         }
+
+        public static IReadOnlyList<string> SupportedExtensions
+        {
+            get
+            {
+                return ParserTypes.Keys.ToList();
+            }
+        }
     }
 
     public interface IFileParserFactory

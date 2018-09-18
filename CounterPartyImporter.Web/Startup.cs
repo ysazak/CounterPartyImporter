@@ -1,10 +1,14 @@
+using CounterPartyDomain.Data;
+using CounterPartyDomain.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace CounterPartyImporter.Web
 {
@@ -27,6 +31,16 @@ namespace CounterPartyImporter.Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            var connectionStr = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<CountryPartyImporterDbContext>(options => options.UseSqlServer(connectionStr));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Country Importer API", Version = "v1" });
+            });
+
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +58,15 @@ namespace CounterPartyImporter.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>

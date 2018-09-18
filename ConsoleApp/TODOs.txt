@@ -1,4 +1,7 @@
 ﻿# WebApplication
+	# Upload
+	# List
 # Get rid of Object mapping
 # Write more tests
+# Converter
 # Add Enumartion class for CompanyType

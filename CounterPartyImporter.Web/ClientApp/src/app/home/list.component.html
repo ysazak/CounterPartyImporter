@@ -1,0 +1,39 @@
+<div *ngIf="pagedTable | async; let pagedTable else emptyList">
+  <div class="panel panel-default"  style="margin-top: px;">
+    <div class="panel-heading">Imported Companies</div>
+    <div class="panel-body">
+      <table class="table">
+        <thead>
+          <th>Id</th>
+          <th>External Id</th>
+          <th>Trading Name</th>
+          <th>Legal Name</th>
+          <th>Company Type</th>
+          <th>Phone</th>
+          <th>Fax</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let company of pagedTable.data">
+            <td>{{company.id}}</td>
+            <td>{{company.externalId}}</td>
+            <td>{{company.tradingName}}</td>
+            <td>{{company.legalName}}</td>
+            <td>{{company.companyType}}</td>
+            <td>{{company.phone}}</td>
+            <td>{{company.fax}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="...">
+      <ul class="pager">
+        <li *ngIf="currentPage > 1"><a (click)="OnClickPrevious($event)">Previous</a></li>
+        <li><b>{{currentPage}}</b></li>
+        <li *ngIf="currentPage < count"><a (click)="OnClickNext($event)">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<ng-template *ngIf="!loading" #emptyList>No Order Found</ng-template>
+<ng-template *ngIf="loading">Loading...</ng-template>
+<ng-template *ngIf="failed">Error: Table cannot be viewed.</ng-template>

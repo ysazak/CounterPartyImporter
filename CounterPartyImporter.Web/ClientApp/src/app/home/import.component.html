@@ -1,0 +1,31 @@
+<h1>Counter Party Importer</h1>
+<div class="form-group">
+  <label class="control-label" for="fileUpload">Select a File</label>
+  <input #file type="file" class="form-control" id="fileUpload" (change)="onFileChange($event)" />
+</div>
+
+<button type="submit" [disabled]="loading" (click)="upload(file.files)" class="btn btn-success">Import <i class="fa fa-spinner fa-spin fa-fw"
+    *ngIf="loading"></i></button>
+<br/>
+<br/>
+<span *ngIf="loading">
+  <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+    {{progress}}%
+  </span>
+  <br/>
+  <div class="progress" *ngIf="loading">
+    <div class="progress-bar progress-bar-striped" [class.active]="loading" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+      [style.width]="progress + '%'">
+      {{progress}}%
+    </div>
+  </div>
+  <div class="alert alert-info" role="alert" *ngIf="progressStatus">
+    {{progressStatus}}
+  </div>
+</span>
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+  {{errorMessage}}
+</div>
+<div class="alert alert-success" role="alert" *ngIf="isSucessful">
+    Import completed successfully.
+  </div>
